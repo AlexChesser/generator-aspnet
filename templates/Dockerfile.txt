@@ -4,5 +4,9 @@ COPY . /app
 WORKDIR /app
 RUN ["dnu", "restore"]
 
+# for any project involving EntityFramework, SQLLITE3 must be a version >= 3.7.15
+RUN printf "deb http://ftp.us.debian.org/debian jessie main\n" >> /etc/apt/sources.list
+RUN apt-get -qq update && apt-get install -qqy sqlite3 libsqlite3-dev
+
 EXPOSE 5000/tcp
 ENTRYPOINT ["dnx", "-p", "project.json", "web"]
